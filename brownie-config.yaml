@@ -1,0 +1,21 @@
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@4.2.0
+  - smartcontractkit/chainlink@1.5.1
+compiler:
+  solc:
+    remappings:
+      - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.2.0'
+      - '@chainlink=smartcontractkit/chainlink@1.5.1'
+dotenv: .env
+networks:
+  default: development
+  development:
+    verify: False
+  ganache:
+    verify: False
+  rinkeby:
+    verify: True
+    link_token: '0x01BE23585060835E02B77ef475b0Cc51aA1e0709'
+    keeper_registry: "0x409cf388dab66275da3e44005d182c12eeaa12a0"
+wallets:
+  from_key: ${PRIVATE_KEY}
