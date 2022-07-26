@@ -143,7 +143,7 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
 
     function fund(uint32 _campaignId) external payable isOngoing(_campaignId) {
         require(_campaignId < campaignId, "Specified ID doesn't exist");
-        Campaign memory campaign = campaigns[_campaignId];
+        Campaign storage campaign = campaigns[_campaignId];
         campaign._amountFunded += msg.value;
         amountFunded[msg.sender][_campaignId] += msg.value;
 
@@ -154,7 +154,7 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
         external
         isOngoing(_campaignId)
     {
-        Campaign memory campaign = campaigns[_campaignId];
+        Campaign storage campaign = campaigns[_campaignId];
         require(
             _amount <= amountFunded[msg.sender][_campaignId],
             "Specified amount is higher than available amount"
@@ -168,7 +168,7 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
     }
 
     function cancel(uint256 _campaignId) external {
-        Campaign memory campaign = campaigns[_campaignId];
+        Campaign storage campaign = campaigns[_campaignId];
         require(
             msg.sender == campaign._initiator,
             "msg.sender is not the initiator"
@@ -184,7 +184,7 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
     }
 
     function fulfill(uint256 _campaignId) public {
-        Campaign memory campaign = campaigns[_campaignId];
+        Campaign storage campaign = campaigns[_campaignId];
         require(block.timestamp > campaign._endTime, "Campaign is not ended");
 
         uint256 amountToSend = campaign._amountFunded;
@@ -197,7 +197,7 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
     }
 
     function refund(uint256 _campaignId) external {
-        Campaign memory campaign = campaigns[_campaignId];
+        Campaign storage campaign = campaigns[_campaignId];
         require(block.timestamp > campaign._endTime, "Campaign is not ended");
         require(
             campaigns[_campaignId]._proposed == true,
@@ -239,7 +239,8 @@ contract CrowdFund is KeeperCompatibleInterface, Ownable {
     function getCampaign(uint256 _campaignId)
         public
         view
-        returns (Campaign memory)
+        returns (Campaign 
+        memory)
     {
         require(_campaignId < campaignId, "Specified ID doesn't exist");
         return campaigns[_campaignId];
